@@ -40,7 +40,7 @@ class Polynomial:
         return " + ".join(expression).replace(" + -", " - ")
     
     def __repr__(self):
-        return repr(self)
+        return f"Polynomial({self})"
 
     def __addSubtract(self, p2, operand):
         operand_lookup = {
