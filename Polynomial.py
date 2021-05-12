@@ -2,10 +2,9 @@ import operator
 import itertools as it
 
 class Polynomial:
-    def __init__(self, coeff = [], var = "x"):
+    def __init__(self, coeff = []):
         self.coeff = coeff
         self.degree = None
-        self.var = var
         if(len(coeff) > 0):
             self.degree = len(coeff)-1
     
@@ -15,27 +14,26 @@ class Polynomial:
 
     def __len__(self):
         '''
-        Returns the maximum degree of the equation
+        Returns the degree of the equation
         '''
-        return self.degree
+        return len(self.coeff)
 
     def __str__(self):
         degree_counter = self.degree
         expression = []
         for current_coeff in self.coeff:
+            if degree_counter == 0:
+                current_coeff = f"{current_coeff}"
             if current_coeff == 0:
                 degree_counter -= 1
                 continue
-            if degree_counter == 0:
-                current_coeff = f"{current_coeff}"
-            if current_coeff in {-1, 1}:
-                current_coeff = "" if current_coeff == 1 else "-"
-
-            if degree_counter > 1:  # ax^2
-                expression.append(f"{current_coeff}{self.var}^{degree_counter}")
-            elif degree_counter == 1: # bx
-                expression.append(f"{current_coeff}{self.var}")
-            else: # constant
+            if current_coeff == 1:
+                current_coeff = ""
+            if degree_counter > 1:
+                expression.append(f"{current_coeff}x^{degree_counter}")
+            elif degree_counter == 1:
+                expression.append(f"{current_coeff}x")
+            else:    
                 expression.append(f"{current_coeff}")
             degree_counter -= 1
 
@@ -80,32 +78,22 @@ class Polynomial:
             return self
         r = self
         for _ in range(1, x):
+            print(r)
             r *= r
-        return r
-    
-    def value(self, x):
-        '''
-        Get the value of the polynomial at 'x'
-        '''
-        r = 0
-        for i in range(self.degree, -1, -1):
-            r += (x**i)*self.coeff[self.degree - i]
-        
+            print(r)
         return r
 
+# p1 = Polynomial([1, 2, 0, 3, 4])
+# p2 = Polynomial([1, 2, 4, 5, 6])
+# print(p1)
+# print(p2)
+# print(p1+p2)
+# print(p1-p2)
+# print(Polynomial([]))
+# print(Polynomial([0, 0, 1]))
+# print(Polynomial([0, 0, 10]))
+print(Polynomial([1, 1]) * Polynomial([1, 1]))
+print(Polynomial([1, 1]) ** 2)
 
-if __name__ == "__main__":
-    # p1 = Polynomial([1, 2, 0, 3, 4])
-    # p2 = Polynomial([1, 2, 4, 5, 6])
-    # print(p1)
-    # print(p2)
-    # print(p1+p2)
-    # print(p1-p2)
-    # print(Polynomial([]))
-    # print(Polynomial([0, 0, 1]))
-    # print(Polynomial([0, 1, 0]))
-    # print(Polynomial([0, 0, 10]))
-    # print(Polynomial([1, 1]) * Polynomial([1, 1]))
-    # print(Polynomial([1, 1]) ** 2)
-    # print(Polynomial([1, 2, 1]).value(x = 4))   # x^2 + 2x + 1 == (x + 1)^2
-    print(str(Polynomial([1, 2, 4], var="n")))
+
+
