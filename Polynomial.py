@@ -28,13 +28,16 @@ class Polynomial:
             if current_coeff == 0:
                 degree_counter -= 1
                 continue
-            if current_coeff == 1:
-                current_coeff = ""
-            if degree_counter > 1:
-                expression.append(f"{current_coeff}x^{degree_counter}")
-            elif degree_counter == 1:
-                expression.append(f"{current_coeff}x")
-            else:    
+            if degree_counter == 0:
+                current_coeff = f"{current_coeff}"
+            if current_coeff in {-1, 1}:
+                current_coeff = "" if current_coeff == 1 else "-"
+
+            if degree_counter > 1:  # ax^2
+                expression.append(f"{current_coeff}{self.var}^{degree_counter}")
+            elif degree_counter == 1: # bx
+                expression.append(f"{current_coeff}{self.var}")
+            else: # constant
                 expression.append(f"{current_coeff}")
             degree_counter -= 1
 
