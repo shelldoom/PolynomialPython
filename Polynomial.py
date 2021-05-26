@@ -6,11 +6,15 @@ class Polynomial:
         self.coeff = coeff
         self.degree = None
         self.var = var
+        # Truncate initial zeroes
+        while self.coeff[0] == 0:
+            del self.coeff[0]
         if(len(coeff) > 0):
             self.degree = len(coeff)-1
     
     def __eq__(self, p2):
         assert isinstance(p2, Polynomial)
+        print(self.coeff, p2.coeff)
         return self.coeff == p2.coeff
 
     def __len__(self):
@@ -23,11 +27,11 @@ class Polynomial:
         degree_counter = self.degree
         expression = []
         for current_coeff in self.coeff:
-            if degree_counter == 0:
-                current_coeff = f"{current_coeff}"
             if current_coeff == 0:
                 degree_counter -= 1
                 continue
+            if degree_counter == 0:
+                current_coeff = f"{current_coeff}"
             if degree_counter == 0:
                 current_coeff = f"{current_coeff}"
             if current_coeff in {-1, 1}:
@@ -67,25 +71,31 @@ class Polynomial:
 
     def __mul__(self, p2):
         p1 = self
-        p3_len = p1.degree + p2.degree 
+        p3_len = p1.degree + p2.degree
         p3_coeff = [0]*(p3_len + 1)
-
-        for i in range(len(p1)):
-            for j in range(len(p2)):
+        for i in range(p1.degree + 1):
+            for j in range(p2.degree + 1):
                 p3_coeff[i+j] += p1.coeff[i] * p2.coeff[j]
         return Polynomial(p3_coeff)
     
     def __pow__(self, x):
+        # Polynomial^x
+        # Binary Exponentiation
         if x == 0:
             return Polynomial([1])
         if x == 1:
             return self
-        r = self
-        for _ in range(1, x):
-            print(r)
-            r *= r
-            print(r)
+        tmp = self.__pow__(x//2)
+        r = tmp*tmp
+        if(x % 2 == 1):
+            r *= self
         return r
+        # r = self
+        # for _ in range(1, x):
+        #     print(r)
+        #     r *= r
+        #     print(r)
+        # return r
     
     def value(self, x):
         '''
@@ -108,9 +118,10 @@ if __name__ == "__main__":
     # print(Polynomial([0, 0, 1]))
     # print(Polynomial([0, 1, 0]))
     # print(Polynomial([0, 0, 10]))
-    # print(Polynomial([1, 1]) * Polynomial([1, 1]))
+    print(Polynomial([1, 1]) * Polynomial([1, 1]))
     # print(Polynomial([1, 1]) ** 2)
     # print(Polynomial([1, 2, 1]).value(x = 4))   # x^2 + 2x + 1 == (x + 1)^2
-    print(str(Polynomial([1, 2, 4], var="n"))) 
+    # print(str(Polynomial([1, 2, 4], var="n"))) 
+    # print(str(Polynomial([0, 0, 0, 2, 1])))
 
 
