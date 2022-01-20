@@ -70,13 +70,22 @@ class Polynomial:
         return self.__addSubtract(p2, "+")
 
     def __mul__(self, p2):
-        p1 = self
-        p3_len = p1.degree + p2.degree
-        p3_coeff = [0]*(p3_len + 1)
-        for i in range(p1.degree + 1):
-            for j in range(p2.degree + 1):
-                p3_coeff[i+j] += p1.coeff[i] * p2.coeff[j]
-        return Polynomial(p3_coeff)
+        # Multiplication between two polynomials
+        if isinstance(p2, Polynomial):
+            p1 = self
+            p3_len = p1.degree + p2.degree
+            p3_coeff = [0]*(p3_len + 1)
+            for i in range(p1.degree + 1):
+                for j in range(p2.degree + 1):
+                    p3_coeff[i+j] += p1.coeff[i] * p2.coeff[j]
+            return Polynomial(p3_coeff)
+        # Scalar multiplication
+        elif isinstance(p2, (int, float)):
+            p3_coeff = [p2*c for c in self.coeff]
+            return Polynomial(p3_coeff)
+        else:
+            raise TypeError(f"unsupported operand type(s) for *: '{type(self).__name__}' and '{type(p2).__name__}'")
+
     
     def __pow__(self, x):
         # Polynomial^x
@@ -90,12 +99,6 @@ class Polynomial:
         if(x % 2 == 1):
             r *= self
         return r
-        # r = self
-        # for _ in range(1, x):
-        #     print(r)
-        #     r *= r
-        #     print(r)
-        # return r
     
     def value(self, x):
         '''
