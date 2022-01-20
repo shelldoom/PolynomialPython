@@ -37,7 +37,8 @@ Examples:
 - Get expression value at point
   ```python
   p = Polynomial([3, -2, 1])
-  print(f"{p} at (x=0) is {p.value}")
+  print(f"({p}) at (x = 3) is {p.value(3)}") 
+  # (3x^2 - 2x + 1) at (x = 3) is 22
   ```
 - Customized expression output
   ```python
